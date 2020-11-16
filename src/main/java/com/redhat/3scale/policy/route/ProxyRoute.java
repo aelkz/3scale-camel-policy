@@ -7,57 +7,16 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.camel.Exchange;
 import org.apache.camel.Message;
 import org.apache.camel.builder.RouteBuilder;
-import org.apache.camel.component.http4.HttpComponent;
-import org.apache.camel.component.jetty.JettyHttpComponent;
 import org.apache.camel.model.RouteDefinition;
-import org.apache.camel.util.jsse.KeyManagersParameters;
-import org.apache.camel.util.jsse.KeyStoreParameters;
-import org.apache.camel.util.jsse.SSLContextParameters;
-import org.apache.camel.util.jsse.TrustManagersParameters;
 import org.springframework.stereotype.Component;
 import br.gov.bnb.openbanking.policy.ipratelimit.exception.RateLimitException;
 
-@Component("ip-rate-limit")
+@Component("policy")
 public class ProxyRoute extends RouteBuilder {
 	private static final Logger LOGGER = Logger.getLogger(ProxyRoute.class.getName());
 
-	private void configureSslForJetty() {
-		KeyStoreParameters ksp = new KeyStoreParameters();
-		ksp.setResource("/Users/raphael/workspace-github/ip-rate-limit/ssl/keystore.jks");
-		ksp.setPassword("Q1Kd1wPCk2msgSE81lCqygtWJ");
-
-		KeyManagersParameters kmp = new KeyManagersParameters();
-		kmp.setKeyStore(ksp);
-		kmp.setKeyPassword("Q1Kd1wPCk2msgSE81lCqygtWJ");
-
-		SSLContextParameters scp = new SSLContextParameters();
-		scp.setKeyManagers(kmp);
-
-		JettyHttpComponent
-				jettyComponent = getContext().getComponent("jetty", JettyHttpComponent.class);
-		jettyComponent.setSslContextParameters(scp);
-	}
-
-	private void configureSslForHttp4() {
-		KeyStoreParameters trust_ksp = new KeyStoreParameters();
-		trust_ksp.setResource("/Users/raphael/workspace-github/ip-rate-limit/ssl/keystore.jks");
-		trust_ksp.setPassword("Q1Kd1wPCk2msgSE81lCqygtWJ");
-
-		TrustManagersParameters trustp = new TrustManagersParameters();
-		trustp.setKeyStore(trust_ksp);
-
-		SSLContextParameters scp = new SSLContextParameters();
-		scp.setTrustManagers(trustp);
-
-		HttpComponent httpComponent = getContext().getComponent("https4", HttpComponent.class);
-		httpComponent.setSslContextParameters(scp);
-	}
-
     @Override
     public void configure() throws Exception {
-
-		configureSslForJetty();
-		//configureSslForHttp4();
 
 		final RouteDefinition from;
 		// from = from("jetty://http://0.0.0.0:8080?useXForwardedForHeader=true&matchOnUriPrefix=true");

@@ -1,2 +1,2 @@
-# ip-rate-limit
+# 3scale camel-policy
 
