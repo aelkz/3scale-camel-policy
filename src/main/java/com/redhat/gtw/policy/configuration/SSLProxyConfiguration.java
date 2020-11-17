@@ -11,6 +11,8 @@ public class SSLProxyConfiguration {
     private String keystorePass;
     @Value("${proxy.schema}")
     private String schema;
+    @Value("${proxy.dest-schema}")
+    private String destinationSchema;
     @Value("${proxy.port}")
     private String port;
 
@@ -44,5 +46,13 @@ public class SSLProxyConfiguration {
 
     public void setPort(String port) {
         this.port = port;
+    }
+
+    public String getDestinationSchema() {
+        return destinationSchema;
+    }
+
+    public void setDestinationSchema(String destinationSchema) {
+        this.destinationSchema = destinationSchema;
     }
 }

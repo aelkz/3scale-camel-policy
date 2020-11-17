@@ -81,7 +81,7 @@ public class ProxyRoute extends RouteBuilder {
 				.process((e) -> {
 					System.out.println(">>> forwarding request to backend");
 				})
-			.toD("http4://"
+			.toD(proxyConfig.getDestinationSchema()+"://"
 				+ "${header." + Exchange.HTTP_HOST + "}:"
 				+ "${header." + Exchange.HTTP_PORT + "}"
 				+ "${header." + Exchange.HTTP_PATH + "}"
