@@ -68,7 +68,7 @@ public class ProxyRoute extends RouteBuilder {
 		final RouteDefinition from;
 		// from = from("jetty://http://0.0.0.0:8080?useXForwardedForHeader=true&matchOnUriPrefix=true");
 		// from = from("jetty://https://0.0.0.0:8443?useXForwardedForHeader=true&matchOnUriPrefix=true");
-		from = from("jetty://https://0.0.0.0:8443?useXForwardedForHeader=true&matchOnUriPrefix=true");
+		from = from("jetty://https://0.0.0.0:443?useXForwardedForHeader=true&matchOnUriPrefix=true");
 
 		from
 		.doTry()

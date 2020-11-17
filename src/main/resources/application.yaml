@@ -95,3 +95,5 @@ proxy:
   keystore:
     dest: ${OPENSHIFT_JETTY_KEYSTORE_DESTINATION:/deployments/data/keystore.jks}
     pass: ${OPENSHIFT_JETTY_KEYSTORE_PASSWORD:changeme}
+    #dest: ${OPENSHIFT_JETTY_KEYSTORE_DESTINATION:/Users/raphael/Documents/_temp/keystore.jks}
+    #pass: ${OPENSHIFT_JETTY_KEYSTORE_PASSWORD:77z9SYEGhSovlsBkALpko0BUb}
