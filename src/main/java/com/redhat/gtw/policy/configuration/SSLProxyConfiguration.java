@@ -12,7 +12,7 @@ public class SSLProxyConfiguration {
     @Value("${proxy.schema}")
     private String schema;
     @Value("${proxy.dest-schema}")
-    private String destinationSchema;
+    private String destinationComponentSchema;
     @Value("${proxy.port}")
     private String port;
 
@@ -48,11 +48,11 @@ public class SSLProxyConfiguration {
         this.port = port;
     }
 
-    public String getDestinationSchema() {
-        return destinationSchema;
+    public String getDestinationComponentSchema() {
+        return destinationComponentSchema;
     }
 
-    public void setDestinationSchema(String destinationSchema) {
-        this.destinationSchema = destinationSchema;
+    public void setDestinationComponentSchema(String destinationComponentSchema) {
+        this.destinationComponentSchema = destinationComponentSchema;
     }
 }

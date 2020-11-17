@@ -64,7 +64,7 @@ public class ProxyRoute extends RouteBuilder {
 
 		if ("https".equals(proxyConfig.getSchema())) {
 			configureSslForJetty();
-			//configureSslForHttp4();
+			configureSslForHttp4();
 		}
 
 		final RouteDefinition from;
@@ -81,7 +81,7 @@ public class ProxyRoute extends RouteBuilder {
 				.process((e) -> {
 					System.out.println(">>> forwarding request to backend");
 				})
-			.toD(proxyConfig.getDestinationSchema()+"://"
+			.toD(proxyConfig.getDestinationComponentSchema()+"://"
 				+ "${header." + Exchange.HTTP_HOST + "}:"
 				+ "${header." + Exchange.HTTP_PORT + "}"
 				+ "${header." + Exchange.HTTP_PATH + "}"
