@@ -8,19 +8,69 @@ import org.apache.camel.Exchange;
 import org.apache.camel.Message;
 import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.model.RouteDefinition;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import com.redhat.gtw.policy.exception.RateLimitException;
+// SSL configuration
+import org.apache.camel.component.http4.HttpComponent;
+import org.apache.camel.component.jetty.JettyHttpComponent;
+import org.apache.camel.util.jsse.KeyManagersParameters;
+import org.apache.camel.util.jsse.KeyStoreParameters;
+import org.apache.camel.util.jsse.SSLContextParameters;
+import org.apache.camel.util.jsse.TrustManagersParameters;
 
 @Component("policy")
 public class ProxyRoute extends RouteBuilder {
 	private static final Logger LOGGER = Logger.getLogger(ProxyRoute.class.getName());
 
+	@Value("${proxy.keystore-dest}")
+	private String keystore;
+
+	@Value("${proxy.keystore-pass}")
+	private String password;
+
+	private void configureSslForJetty() {
+		KeyStoreParameters ksp = new KeyStoreParameters();
+		ksp.setResource(keystore);
+		ksp.setPassword(password);
+
+		KeyManagersParameters kmp = new KeyManagersParameters();
+		kmp.setKeyStore(ksp);
+		kmp.setKeyPassword(password);
+
+		SSLContextParameters scp = new SSLContextParameters();
+		scp.setKeyManagers(kmp);
+
+		JettyHttpComponent
+				jettyComponent = getContext().getComponent("jetty", JettyHttpComponent.class);
+		jettyComponent.setSslContextParameters(scp);
+	}
+
+	private void configureSslForHttp4() {
+		KeyStoreParameters trust_ksp = new KeyStoreParameters();
+		trust_ksp.setResource(keystore);
+		trust_ksp.setPassword(password);
+
+		TrustManagersParameters trustp = new TrustManagersParameters();
+		trustp.setKeyStore(trust_ksp);
+
+		SSLContextParameters scp = new SSLContextParameters();
+		scp.setTrustManagers(trustp);
+
+		HttpComponent httpComponent = getContext().getComponent("https4", HttpComponent.class);
+		httpComponent.setSslContextParameters(scp);
+	}
+
     @Override
     public void configure() throws Exception {
 
+		configureSslForJetty();
+		//configureSslForHttp4();
+
 		final RouteDefinition from;
-		from = from("jetty://http://0.0.0.0:8080?useXForwardedForHeader=true&matchOnUriPrefix=true");
+		// from = from("jetty://http://0.0.0.0:8080?useXForwardedForHeader=true&matchOnUriPrefix=true");
 		// from = from("jetty://https://0.0.0.0:8443?useXForwardedForHeader=true&matchOnUriPrefix=true");
+		from = from("jetty://https://0.0.0.0:8443?useXForwardedForHeader=true&matchOnUriPrefix=true");
 
 		from
 		.doTry()

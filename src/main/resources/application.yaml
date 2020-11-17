@@ -87,3 +87,10 @@ prometheus:
   host: ${OPENSHIFT_PROMETHEUS_API_URL:"prometheus.microservices.svc.cluster.local"}
   port: 8080
   status-path: ${OPENSHIFT_PROMETHEUS_STATUS_URL:prometheus.microservices.svc.cluster.local:8080/health}
+
+# =============================================
+# SSL configuration
+# ---------------------------------------------
+proxy:
+  keystore-dest: ${OPENSHIFT_JETTY_KEYSTORE_DESTINATION:"/deployments/data/keystore.jks"}
+  keystore-pass: ${OPENSHIFT_JETTY_KEYSTORE_PASSWORD:"changeme"}
