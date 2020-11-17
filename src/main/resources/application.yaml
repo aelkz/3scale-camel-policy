@@ -32,7 +32,7 @@ camel:
 # lets listen on all ports to ensure we can be invoked from the pod ip address
 server:
   address: 0.0.0.0
-  port: 8080
+  port: 8090
 
 # lets use a different management port in case you need to listen to HTTP requests on 8080
 management:
