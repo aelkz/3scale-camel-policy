@@ -62,13 +62,15 @@ public class ProxyRoute extends RouteBuilder {
     @Override
     public void configure() throws Exception {
 
-		configureSslForJetty();
-		//configureSslForHttp4();
+		if ("https".equals(proxyConfig.getSchema())) {
+			configureSslForJetty();
+			//configureSslForHttp4();
+		}
 
 		final RouteDefinition from;
 		// from = from("jetty://http://0.0.0.0:8080?useXForwardedForHeader=true&matchOnUriPrefix=true");
 		// from = from("jetty://https://0.0.0.0:8443?useXForwardedForHeader=true&matchOnUriPrefix=true");
-		from = from("jetty://https://0.0.0.0:443?useXForwardedForHeader=true&matchOnUriPrefix=true");
+		from = from("jetty://"+ proxyConfig.getSchema() +"://0.0.0.0:" + proxyConfig.getPort() + "?useXForwardedForHeader=true&matchOnUriPrefix=true");
 
 		from
 		.doTry()
