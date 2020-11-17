@@ -4,11 +4,12 @@ import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
+import com.redhat.gtw.policy.configuration.SSLProxyConfiguration;
 import org.apache.camel.Exchange;
 import org.apache.camel.Message;
 import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.model.RouteDefinition;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import com.redhat.gtw.policy.exception.RateLimitException;
 // SSL configuration
@@ -23,20 +24,17 @@ import org.apache.camel.util.jsse.TrustManagersParameters;
 public class ProxyRoute extends RouteBuilder {
 	private static final Logger LOGGER = Logger.getLogger(ProxyRoute.class.getName());
 
-	@Value("${proxy.keystore-dest}")
-	private String keystore;
-
-	@Value("${proxy.keystore-pass}")
-	private String password;
+	@Autowired
+	private SSLProxyConfiguration proxyConfig;
 
 	private void configureSslForJetty() {
 		KeyStoreParameters ksp = new KeyStoreParameters();
-		ksp.setResource(keystore);
-		ksp.setPassword(password);
+		ksp.setResource(proxyConfig.getKeystoreDest());
+		ksp.setPassword(proxyConfig.getKeystorePass());
 
 		KeyManagersParameters kmp = new KeyManagersParameters();
 		kmp.setKeyStore(ksp);
-		kmp.setKeyPassword(password);
+		kmp.setKeyPassword(proxyConfig.getKeystorePass());
 
 		SSLContextParameters scp = new SSLContextParameters();
 		scp.setKeyManagers(kmp);
@@ -48,8 +46,8 @@ public class ProxyRoute extends RouteBuilder {
 
 	private void configureSslForHttp4() {
 		KeyStoreParameters trust_ksp = new KeyStoreParameters();
-		trust_ksp.setResource(keystore);
-		trust_ksp.setPassword(password);
+		trust_ksp.setResource(proxyConfig.getKeystoreDest());
+		trust_ksp.setPassword(proxyConfig.getKeystorePass());
 
 		TrustManagersParameters trustp = new TrustManagersParameters();
 		trustp.setKeyStore(trust_ksp);
