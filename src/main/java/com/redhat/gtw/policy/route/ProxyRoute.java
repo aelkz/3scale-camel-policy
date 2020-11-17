@@ -1,4 +1,4 @@
-package br.gov.bnb.openbanking.policy.ipratelimit.route;
+package com.redhat.gtw.policy.route;
 
 import java.util.Enumeration;
 import java.util.Iterator;
@@ -9,7 +9,7 @@ import org.apache.camel.Message;
 import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.model.RouteDefinition;
 import org.springframework.stereotype.Component;
-import br.gov.bnb.openbanking.policy.ipratelimit.exception.RateLimitException;
+import com.redhat.gtw.policy.exception.RateLimitException;
 
 @Component("policy")
 public class ProxyRoute extends RouteBuilder {
@@ -19,8 +19,8 @@ public class ProxyRoute extends RouteBuilder {
     public void configure() throws Exception {
 
 		final RouteDefinition from;
-		// from = from("jetty://http://0.0.0.0:8080?useXForwardedForHeader=true&matchOnUriPrefix=true");
-		from = from("jetty://https://0.0.0.0:8443?useXForwardedForHeader=true&matchOnUriPrefix=true");
+		from = from("jetty://http://0.0.0.0:8080?useXForwardedForHeader=true&matchOnUriPrefix=true");
+		// from = from("jetty://https://0.0.0.0:8443?useXForwardedForHeader=true&matchOnUriPrefix=true");
 
 		from
 		.doTry()

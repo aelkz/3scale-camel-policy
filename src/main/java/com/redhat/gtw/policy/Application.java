@@ -1,4 +1,4 @@
-package br.gov.bnb.openbanking.policy.ipratelimit;
+package com.redhat.gtw.policy;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

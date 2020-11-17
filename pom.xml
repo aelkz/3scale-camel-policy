@@ -1,18 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>br.gov.bnb.openbanking.custompolicy</groupId>
-	<artifactId>3scale-camel-policy</artifactId>
+	<groupId>com.redhat.gtw.policy</groupId>
+	<artifactId>camel-policy</artifactId>
+
 	<version>0.0.1-SNAPSHOT</version>
-	<name>Fuse :: Boosters :: Rest HTTP</name>
+	<packaging>jar</packaging>
+
+	<name>camel-policy</name>
+	<description>Custom 3scale Camel Policy</description>
 
 	<properties>
 		<java.version>1.8</java.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+		<!-- -->
 		<fuse.bom.version>7.7.0.fuse-sb2-770010-redhat-00001</fuse.bom.version>
 		<version.springboot>2.1.6.RELEASE</version.springboot>
-		<camel.version>3.6.0</camel.version>
 		<!-- opentracing -->
 		<version.opentracing.spring.cloud.starter>0.5.9</version.opentracing.spring.cloud.starter>
 		<version.opentracing.spring.jaeger.starter>3.1.1.redhat-00009</version.opentracing.spring.jaeger.starter>
@@ -20,8 +25,14 @@
 		<version.jaeger.tracing>1.4.0</version.jaeger.tracing>
 		<!-- prometheus -->
 		<version.micrometer>1.5.6</version.micrometer>
+		<!-- -->
 		<maven.compiler.plugin.version>3.8.1</maven.compiler.plugin.version>
 		<maven.min.version>3.5.4</maven.min.version>
+		<maven.compiler.source>1.8</maven.compiler.source>
+		<maven.compiler.target>1.8</maven.compiler.target>
+		<!-- -->
+		<nexusReleaseRepoUrl></nexusReleaseRepoUrl>
+		<nexusSnapshotRepoUrl></nexusSnapshotRepoUrl>
 	</properties>
 
 	<dependencyManagement>
@@ -83,33 +94,6 @@
 			<version>4.5.13</version>
 		</dependency>
 	</dependencies>
-
-	<build>
-		<plugins>
-			<!-- Core plugins -->
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<version>${maven.compiler.plugin.version}</version>
-				<configuration>
-					<source>${java.version}</source>
-					<target>${java.version}</target>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.jboss.redhat-fuse</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
-				<version>${fuse.bom.version}</version>
-				<executions>
-					<execution>
-						<goals>
-							<goal>repackage</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-		</plugins>
-	</build>
 
 	<repositories>
 		<!-- maven central repository -->
@@ -182,5 +166,30 @@
 			<url>https://maven.repository.redhat.com/earlyaccess/all/</url>
 		</pluginRepository>
 	</pluginRepositories>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>${java.version}</source>
+					<target>${java.version}</target>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<goals>
+							<goal>repackage</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
 
 </project>
