@@ -98,6 +98,7 @@ proxy:
   consumer: ${OPENSHIFT_PROXY_SCHEMA:netty4-http}
   producer: ${OPENSHIFT_PROXY_DESTINATION_COMPONENT_SCHEMA:netty4-http}
   port: ${OPENSHIFT_PROXY_PORT:8443}
+  producer-query: ${OPENSHIFT_PRODUCER_QUERY:?connectionClose=false&bridgeEndpoint=true&copyHeaders=true}
   keystore:
     #dest: ${OPENSHIFT_PROXY_KEYSTORE_DESTINATION:/deployments/data/keystore.jks}
     #pass: ${OPENSHIFT_PROXY_KEYSTORE_PASSWORD:changeme}

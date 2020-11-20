@@ -49,7 +49,8 @@ public class ProxyRoute extends RouteBuilder {
 				+ "${header." + Exchange.HTTP_SCHEME + "}://"
 				+ "${header." + Exchange.HTTP_HOST + "}:"
 				+ "${header." + Exchange.HTTP_PORT + "}"
-				+ "${header." + Exchange.HTTP_PATH + "}")
+				+ "${header." + Exchange.HTTP_PATH + "}"
+				+ proxyConfig.getProducerQuery())
 			.process((e) -> {
 				System.out.println("\n:: request forwarded with "+ proxyConfig.getProducer() +" producer\n");
 			})
@@ -85,6 +86,7 @@ public class ProxyRoute extends RouteBuilder {
 		Integer port = (Integer) message.getHeader(Exchange.HTTP_PORT);
 		String scheme = (String) message.getHeader(Exchange.HTTP_SCHEME);
 
+		LOGGER.info("REDIRECTING TO HTTP_HOST: " + ((String) message.getHeader("CamelHttpHost")));
 		LOGGER.info("REDIRECTING TO HTTP_HOST: " + host);
 		LOGGER.info("REDIRECTING TO HTTP_PORT: " + port);
 		LOGGER.info("REDIRECTING TO HTTP_PATH: " + path);

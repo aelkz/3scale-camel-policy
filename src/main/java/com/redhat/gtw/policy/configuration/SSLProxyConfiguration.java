@@ -13,6 +13,8 @@ public class SSLProxyConfiguration {
     private String consumer;
     @Value("${proxy.producer}")
     private String producer;
+    @Value("${proxy.producer-query}")
+    private String producerQuery;
     @Value("${proxy.port}")
     private String port;
 
@@ -54,5 +56,13 @@ public class SSLProxyConfiguration {
 
     public void setPort(String port) {
         this.port = port;
+    }
+
+    public String getProducerQuery() {
+        return producerQuery;
+    }
+
+    public void setProducerQuery(String producerQuery) {
+        this.producerQuery = producerQuery;
     }
 }
