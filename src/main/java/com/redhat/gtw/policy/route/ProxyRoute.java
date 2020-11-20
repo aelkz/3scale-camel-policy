@@ -57,7 +57,23 @@ public class ProxyRoute extends RouteBuilder {
 		.end();
     }
 
-    private static void headers(final Exchange exchange) {
+    // uncomment the following if you need to add some certificate to your consumer
+    /*
+	private void configureHttp4() {
+		KeyStoreParameters ksp = new KeyStoreParameters();
+		ksp.setResource(proxyConfig.getKeystoreDest());
+		ksp.setPassword(proxyConfig.getKeystorePass());
+		TrustManagersParameters tmp = new TrustManagersParameters();
+		tmp.setKeyStore(ksp);
+		SSLContextParameters scp = new SSLContextParameters();
+		scp.setTrustManagers(tmp);
+		HttpComponent httpComponent = getContext().getComponent("https4", HttpComponent.class);
+		httpComponent.setSslContextParameters(scp);
+	}
+    */
+
+
+	private static void headers(final Exchange exchange) {
 		LOGGER.info("BEFORE REDIRECT");
 		final Message message = exchange.getIn();
 		Iterator<String> iName = message.getHeaders().keySet().iterator();
