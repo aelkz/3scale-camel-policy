@@ -39,6 +39,7 @@ server:
 # lets use a different management port in case you need to listen to HTTP requests on 8080
 management:
   server:
+    # default health-check probe port: 8081
     port: 8081
     address: 0.0.0.0
   endpoints:
