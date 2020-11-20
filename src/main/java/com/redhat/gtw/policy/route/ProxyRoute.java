@@ -46,10 +46,10 @@ public class ProxyRoute extends RouteBuilder {
 				System.out.println("\n:: forwarding request with "+ proxyConfig.getProducer() +" producer\n");
 			})
 			.toD(proxyConfig.getProducer()+":"
-				+ "${headers." + Exchange.HTTP_SCHEME + "}://"
-				+ "${headers." + Exchange.HTTP_HOST + "}:"
-				+ "${headers." + Exchange.HTTP_PORT + "}"
-				+ "${headers." + Exchange.HTTP_PATH + "}")
+				+ "${header." + Exchange.HTTP_SCHEME + "}://"
+				+ "${header." + Exchange.HTTP_HOST + "}:"
+				+ "${header." + Exchange.HTTP_PORT + "}"
+				+ "${header." + Exchange.HTTP_PATH + "}")
 			.process((e) -> {
 				System.out.println("\n:: request forwarded with "+ proxyConfig.getProducer() +" producer\n");
 			})
@@ -80,10 +80,10 @@ public class ProxyRoute extends RouteBuilder {
 
 		LOGGER.info("");
 
-		String host = (String) message.getHeader("CamelHttpHost");
-		String path = (String) message.getHeader("CamelHttpPath");
-		Integer port = (Integer) message.getHeader("CamelHttpPort");
-		String scheme = (String) message.getHeader("CamelHttpScheme");
+		String host = (String) message.getHeader(Exchange.HTTP_HOST);
+		String path = (String) message.getHeader(Exchange.HTTP_PATH);
+		Integer port = (Integer) message.getHeader(Exchange.HTTP_PORT);
+		String scheme = (String) message.getHeader(Exchange.HTTP_SCHEME);
 
 		LOGGER.info("REDIRECTING TO HTTP_HOST: " + host);
 		LOGGER.info("REDIRECTING TO HTTP_PORT: " + port);
@@ -93,7 +93,7 @@ public class ProxyRoute extends RouteBuilder {
 		LOGGER.info("--------------------------------------------------------------------------------");
 		LOGGER.info("PROXY FORWARDING TO "
 				+ message.getHeader(Exchange.HTTP_SCHEME)
-				+ message.getHeader(Exchange.HTTP_HOST)
+				+ ":" + message.getHeader(Exchange.HTTP_HOST)
 				+ ":" + message.getHeader(Exchange.HTTP_PORT)
 				+ message.getHeader(Exchange.HTTP_PATH));
 		LOGGER.info("--------------------------------------------------------------------------------");
