@@ -1,5 +1,7 @@
 package com.redhat.gtw.policy.route;
 
+import java.net.InetSocketAddress;
+import java.nio.charset.StandardCharsets;
 import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.logging.Logger;
@@ -55,52 +57,46 @@ public class ProxyRoute extends RouteBuilder {
     }
 
     private static void headers(final Exchange exchange) {
-    	LOGGER.info("BEFORE REDIRECT");
-    	final Message message = exchange.getIn();
-    	Iterator<String> iName = message.getHeaders().keySet().iterator();
+		LOGGER.info("BEFORE REDIRECT");
+		final Message message = exchange.getIn();
+		Iterator<String> iName = message.getHeaders().keySet().iterator();
 
-    	LOGGER.info("header values:");
-    	while(iName.hasNext()) {
-    		String key = (String) iName.next();
-    		LOGGER.info("\t[" +key+ "] - {"+message.getHeader(key)+"}");
-    	}
-
-		HttpServletRequest req = exchange.getIn().getBody(HttpServletRequest.class);
-
-		LOGGER.info("");
-		LOGGER.info("request header values:");
-		Enumeration<String> headerNames = req.getHeaderNames();
-
-		while(headerNames.hasMoreElements()){
-			String element = headerNames.nextElement();
-    		LOGGER.info("\t[" +element+ "] - {"+req.getHeader(element)+"}");
+		LOGGER.info("header values:");
+		while(iName.hasNext()) {
+			String key = (String) iName.next();
+			LOGGER.info("\t[" +key+ "] - {"+message.getHeader(key)+"}");
 		}
 
-		LOGGER.info("");
-		LOGGER.info("REQUEST REMOTE Addr: " + req.getRemoteAddr());
-		LOGGER.info("REQUEST REMOTE HOST: " + req.getRemoteHost());
-		LOGGER.info("REQUEST REMOTE Request URI: " + req.getRequestURI());
-		LOGGER.info("REQUEST REMOTE PORT: " + req.getRemotePort());
-		LOGGER.info("REQUEST REMOTE USER: " + req.getRemoteUser());
-		LOGGER.info("REQUEST PATH INFO: " + req.getPathInfo());
-		LOGGER.info("REQUEST PATH Translated: " + req.getPathTranslated());
-		LOGGER.info("REQUEST Server Name: " + req.getServerName());
-		LOGGER.info("REQUEST Server Port: " + req.getServerPort());
+		// HttpServletRequest req = exchange.getIn().getBody(HttpServletRequest.class);
+		InetSocketAddress remoteAddress = (InetSocketAddress)message.getHeader("CamelNettyRemoteAddress");
 
 		LOGGER.info("");
-		LOGGER.info("REDIRECTING TO HTTP_HOST " + req.getServerName());
-		LOGGER.info("REDIRECTING TO HTTP_PORT " + req.getServerPort());
-		LOGGER.info("REDIRECTING TO HTTP_PATH " + req.getPathInfo());
-
-		message.setHeader(Exchange.HTTP_HOST, req.getServerName());
-		message.setHeader(Exchange.HTTP_PORT, req.getServerPort());
-		message.setHeader(Exchange.HTTP_PATH, req.getPathInfo());
+		LOGGER.info("REQUEST REMOTE ADDRESS: " + remoteAddress.toString());
+		LOGGER.info("REQUEST CANONICAL HOST NAME: " + remoteAddress.getAddress().getCanonicalHostName());
+		LOGGER.info("REQUEST HOST ADDRESS: " + remoteAddress.getAddress().getHostAddress());
+		LOGGER.info("REQUEST HOST NAME: " + remoteAddress.getAddress().getHostName());
+		LOGGER.info("REQUEST ADDRESS: " + new String(remoteAddress.getAddress().getAddress(), StandardCharsets.UTF_8));
+		LOGGER.info("REQUEST HOST NAME: " + remoteAddress.getHostName());
 
 		LOGGER.info("");
+
+		String host = (String) message.getHeader("CamelHttpHost");
+		String path = (String) message.getHeader("CamelHttpPath");
+		Integer port = (Integer) message.getHeader("CamelHttpPort");
+		String scheme = (String) message.getHeader("CamelHttpScheme");
+
+		LOGGER.info("REDIRECTING TO HTTP_HOST: " + host);
+		LOGGER.info("REDIRECTING TO HTTP_PORT: " + port);
+		LOGGER.info("REDIRECTING TO HTTP_PATH: " + path);
+		LOGGER.info("REDIRECTING TO HTTP_SCHEME: " + scheme);
+
+		LOGGER.info("--------------------------------------------------------------------------------");
 		LOGGER.info("PROXY FORWARDING TO "
-		+ message.getHeader(Exchange.HTTP_HOST)
-		+":"+message.getHeader(Exchange.HTTP_PORT)
-		+ message.getHeader(Exchange.HTTP_PATH));
+				+ message.getHeader(Exchange.HTTP_SCHEME)
+				+ message.getHeader(Exchange.HTTP_HOST)
+				+ ":" + message.getHeader(Exchange.HTTP_PORT)
+				+ message.getHeader(Exchange.HTTP_PATH));
+		LOGGER.info("--------------------------------------------------------------------------------");
     }
 
 }
