@@ -35,7 +35,7 @@ PS. Need to setup a new 3scale account with a new application (user_key)
 1.2 Create a new Backend and add it to `SAMPLE` product
 
 <p align="center">
-<img src="https://raw.githubusercontent.com/aelkz/3scale-camel-policy/https/_images/02.png" title="3scale sample backend" width="70%" height="70%" />
+<img src="https://raw.githubusercontent.com/aelkz/3scale-camel-policy/https/_images/02.png" title="3scale sample backend" width="80%" height="80%" />
 </p>
 
 1.3 Define the policy chain as follows
@@ -100,13 +100,13 @@ echo "
 ```
 
 <p align="center">
-<img src="https://raw.githubusercontent.com/aelkz/3scale-camel-policy/https/_images/04.png" title="3scale policy: service ports" width="80%" height="80%" />
+<img src="https://raw.githubusercontent.com/aelkz/3scale-camel-policy/https/_images/04.png" title="3scale policy: service ports" width="100%" height="100%" />
 </p>
 
 2.3 Set application policy environment variables as follows:
 
 <p align="center">
-<img src="https://raw.githubusercontent.com/aelkz/3scale-camel-policy/https/_images/03.png" title="3scale policy: environment variables" width="80%" height="80%" />
+<img src="https://raw.githubusercontent.com/aelkz/3scale-camel-policy/https/_images/03.png" title="3scale policy: environment variables" width="100%" height="100%" />
 </p>
 
 ```
