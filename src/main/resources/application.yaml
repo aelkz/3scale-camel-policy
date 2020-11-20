@@ -95,13 +95,13 @@ prometheus:
 # SSL configuration
 # ---------------------------------------------
 proxy:
-  consumer: ${OPENSHIFT_PROXY_SCHEMA:netty4-http}
-  producer: ${OPENSHIFT_PROXY_DESTINATION_COMPONENT_SCHEMA:netty4-http}
+  consumer: ${OPENSHIFT_PROXY_CONSUMER_COMPONENT:netty4-http}
+  producer: ${OPENSHIFT_PROXY_PRODUCER_COMPONENT:netty4-http}
   port: ${OPENSHIFT_PROXY_PORT:8443}
   producer-query: ${OPENSHIFT_PRODUCER_QUERY:?connectionClose=false&bridgeEndpoint=true&copyHeaders=true}
   keystore:
     #dest: ${OPENSHIFT_PROXY_KEYSTORE_DESTINATION:/deployments/data/keystore.jks}
     #pass: ${OPENSHIFT_PROXY_KEYSTORE_PASSWORD:changeme}
-    dest: ${OPENSHIFT_JETTY_KEYSTORE_DESTINATION:/deployments/data/keystore.jks}
-    pass: ${OPENSHIFT_JETTY_KEYSTORE_PASSWORD:77z9SYEGhSovlsBkALpko0BUb}
+    dest: ${OPENSHIFT_PROXY_KEYSTORE_DESTINATION:/deployments/data/keystore.jks}
+    pass: ${OPENSHIFT_PROXY_KEYSTORE_PASSWORD:77z9SYEGhSovlsBkALpko0BUb}
 

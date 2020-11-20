@@ -86,7 +86,7 @@ public class ProxyRoute extends RouteBuilder {
 		Integer port = (Integer) message.getHeader(Exchange.HTTP_PORT);
 		String scheme = (String) message.getHeader(Exchange.HTTP_SCHEME);
 
-		LOGGER.info("REDIRECTING TO HTTP_HOST: " + ((String) message.getHeader("CamelHttpHost")));
+		LOGGER.info("REDIRECTING TO HTTP_HOST: " + ((String) message.getHeader("Host")));
 		LOGGER.info("REDIRECTING TO HTTP_HOST: " + host);
 		LOGGER.info("REDIRECTING TO HTTP_PORT: " + port);
 		LOGGER.info("REDIRECTING TO HTTP_PATH: " + path);
@@ -95,7 +95,7 @@ public class ProxyRoute extends RouteBuilder {
 		LOGGER.info("--------------------------------------------------------------------------------");
 		LOGGER.info("PROXY FORWARDING TO "
 				+ message.getHeader(Exchange.HTTP_SCHEME)
-				+ ":" + message.getHeader(Exchange.HTTP_HOST)
+				+ "://" + message.getHeader(Exchange.HTTP_HOST)
 				+ ":" + message.getHeader(Exchange.HTTP_PORT)
 				+ message.getHeader(Exchange.HTTP_PATH));
 		LOGGER.info("--------------------------------------------------------------------------------");
