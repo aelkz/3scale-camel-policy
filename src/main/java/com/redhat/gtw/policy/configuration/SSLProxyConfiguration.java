@@ -9,10 +9,10 @@ public class SSLProxyConfiguration {
     private String keystoreDest;
     @Value("${proxy.keystore.pass}")
     private String keystorePass;
-    @Value("${proxy.schema}")
-    private String schema;
-    @Value("${proxy.dest-schema}")
-    private String destinationComponentSchema;
+    @Value("${proxy.consumer}")
+    private String consumer;
+    @Value("${proxy.producer}")
+    private String producer;
     @Value("${proxy.port}")
     private String port;
 
@@ -32,12 +32,20 @@ public class SSLProxyConfiguration {
         this.keystorePass = keystorePass;
     }
 
-    public String getSchema() {
-        return schema;
+    public String getConsumer() {
+        return consumer;
     }
 
-    public void setSchema(String schema) {
-        this.schema = schema;
+    public void setConsumer(String consumer) {
+        this.consumer = consumer;
+    }
+
+    public String getProducer() {
+        return producer;
+    }
+
+    public void setProducer(String producer) {
+        this.producer = producer;
     }
 
     public String getPort() {
@@ -46,13 +54,5 @@ public class SSLProxyConfiguration {
 
     public void setPort(String port) {
         this.port = port;
-    }
-
-    public String getDestinationComponentSchema() {
-        return destinationComponentSchema;
-    }
-
-    public void setDestinationComponentSchema(String destinationComponentSchema) {
-        this.destinationComponentSchema = destinationComponentSchema;
     }
 }

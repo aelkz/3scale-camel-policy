@@ -28,8 +28,10 @@ camel:
       mapping:
         contextPath: /api/v${api.version}/*
     jmxEnabled: true
+    netty4-http:
+      configuration:
+        protocol: https
 
-# lets listen on all ports to ensure we can be invoked from the pod ip address
 server:
   address: 0.0.0.0
   port: 8090
@@ -92,13 +94,16 @@ prometheus:
 # SSL configuration
 # ---------------------------------------------
 proxy:
-  # http or https
-  schema: ${OPENSHIFT_PROXY_SCHEMA:https}
-  # http4 or https4
-  dest-schema: ${OPENSHIFT_PROXY_DESTINATION_COMPONENT_SCHEMA:https4}
+  consumer: ${OPENSHIFT_PROXY_SCHEMA:netty4-http}
+  producer: ${OPENSHIFT_PROXY_DESTINATION_COMPONENT_SCHEMA:netty4-http}
   port: ${OPENSHIFT_PROXY_PORT:8443}
   keystore:
     #dest: ${OPENSHIFT_PROXY_KEYSTORE_DESTINATION:/deployments/data/keystore.jks}
     #pass: ${OPENSHIFT_PROXY_KEYSTORE_PASSWORD:changeme}
     dest: ${OPENSHIFT_JETTY_KEYSTORE_DESTINATION:/Users/raphael/Documents/_temp/keystore.jks}
     pass: ${OPENSHIFT_JETTY_KEYSTORE_PASSWORD:77z9SYEGhSovlsBkALpko0BUb}
+
+
+
+
+
