@@ -46,7 +46,7 @@ public class ProxyRoute extends RouteBuilder {
 				System.out.println("\n:: forwarding request with "+ proxyConfig.getProducer() +" producer\n");
 			})
 			.toD(proxyConfig.getProducer()+":"
-				+ "${header." + Exchange.HTTP_SCHEME + "}://"
+				+ ("http4".equals(proxyConfig.getProducer()) ? "//" : "${header." + Exchange.HTTP_SCHEME + "}://")
 				+ "${header." + Exchange.HTTP_HOST + "}:"
 				+ "${header." + Exchange.HTTP_PORT + "}"
 				+ "${header." + Exchange.HTTP_PATH + "}"
