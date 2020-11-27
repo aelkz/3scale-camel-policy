@@ -2,10 +2,8 @@ package com.redhat.gtw.policy.route;
 
 import java.net.InetSocketAddress;
 import java.nio.charset.StandardCharsets;
-import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.logging.Logger;
-import javax.servlet.http.HttpServletRequest;
 import com.redhat.gtw.policy.configuration.SSLProxyConfiguration;
 import org.apache.camel.Exchange;
 import org.apache.camel.Message;
@@ -13,6 +11,12 @@ import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.model.RouteDefinition;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.apache.camel.component.http4.HttpComponent;
+import org.apache.camel.util.jsse.KeyManagersParameters;
+import org.apache.camel.util.jsse.KeyStoreParameters;
+import org.apache.camel.util.jsse.SSLContextParameters;
+import org.apache.camel.util.jsse.TrustManagersParameters;
+import org.apache.http.conn.ssl.AllowAllHostnameVerifier;
 
 @Component("policy")
 public class ProxyRoute extends RouteBuilder {
@@ -23,6 +27,7 @@ public class ProxyRoute extends RouteBuilder {
 
     @Override
     public void configure() throws Exception {
+		configureHttp4();
 
 		final RouteDefinition from;
 
@@ -58,20 +63,27 @@ public class ProxyRoute extends RouteBuilder {
     }
 
     // uncomment the following if you need to add some certificate to your consumer
-    /*
 	private void configureHttp4() {
 		KeyStoreParameters ksp = new KeyStoreParameters();
 		ksp.setResource(proxyConfig.getKeystoreDest());
 		ksp.setPassword(proxyConfig.getKeystorePass());
-		TrustManagersParameters tmp = new TrustManagersParameters();
-		tmp.setKeyStore(ksp);
-		SSLContextParameters scp = new SSLContextParameters();
-		scp.setTrustManagers(tmp);
-		HttpComponent httpComponent = getContext().getComponent("https4", HttpComponent.class);
-		httpComponent.setSslContextParameters(scp);
-	}
-    */
 
+		KeyManagersParameters keyManagersParameters = new KeyManagersParameters();
+		keyManagersParameters.setKeyStore(ksp);
+		keyManagersParameters.setKeyPassword(proxyConfig.getKeystorePass());
+
+		TrustManagersParameters trustManagersParameters = new TrustManagersParameters();
+		trustManagersParameters.setKeyStore(ksp);
+
+		SSLContextParameters scp = new SSLContextParameters();
+		scp.setKeyManagers(keyManagersParameters);
+		scp.setTrustManagers(trustManagersParameters);
+
+		HttpComponent httpComponent = getContext().getComponent(proxyConfig.getProducer(), HttpComponent.class);
+		httpComponent.setSslContextParameters(scp);
+		//This is important to make your cert skip CN/Hostname checks
+		httpComponent.setX509HostnameVerifier(new AllowAllHostnameVerifier());
+	}
 
 	private static void headers(final Exchange exchange) {
 		LOGGER.info("BEFORE REDIRECT");
